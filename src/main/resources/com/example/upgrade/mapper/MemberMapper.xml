@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.upgrade.mapper.MemberMapper">
+    <insert id="save" parameterType="com.example.upgrade.entity.Member">
+        INSERT INTO member(id, password, originalPassword, name, email, phoneNumber, role) VALUES (#{id}, #{password}, #{originalPassword}, #{name}, #{email}, #{phoneNumber}, #{role})
+    </insert>
+
+    <select id="getMember" resultType="com.example.upgrade.entity.Member" parameterType="int">
+        SELECT *
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <update id="memberUpdate" parameterType="com.example.upgrade.entity.Member">
+        UPDATE member
+        SET id = #{id},
+            password = #{password},
+            originalPassword = #{originalPassword},
+            name = #{name},
+            email = #{email},
+            phoneNumber = #{phoneNumber}
+        WHERE memberId = #{memberId}
+    </update>
+
+    <delete id="memberDelete" parameterType="int">
+        DELETE member
+        WHERE memberId = #{memberId}
+    </delete>
+</mapper>
