@@ -7,6 +7,9 @@
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <style>
+        .container {
+            max-width: 900px;
+        }
         .field-error{
             border-color: #dc3545;
             color: #dc3545;
@@ -16,8 +19,11 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <br>
+
     <form:form class="container" method="post" modelAttribute="board" enctype="multipart/form-data">
-        <div class="mb-4"></div>
+        <div class="py-5 text-center">
+            <h4>게시판 생성</h4>
+        </div>
         <div class="mb-4">
             <label for="exampleFormControlInput2" class="form-label">작성자</label>
             <input type="text" class="form-control bg-body-secondary" id="exampleFormControlInput2" name="name" value="${member.name}" readonly>

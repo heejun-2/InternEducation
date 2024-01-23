@@ -32,3 +32,4 @@ INSERT INTO board(title, content, name, visitCount) VALUES ('title9', 'content9'
 INSERT INTO board(title, content, name, visitCount) VALUES ('title10', 'content10', 'name10', 0);
 
 INSERT INTO member(id, originalPassword, name, email, phoneNumber, role) VALUES ('admin123', 'admin123@', '관리자', 'admin@naver.com', '010-1234-5678', 'ADMIN');
+ALTER TABLE board ADD COLUMN memberId int

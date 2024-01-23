@@ -71,13 +71,13 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function (){
-        var isPass = false;
+        let isPass = false;
 
         $("[name=passwordCheck]").keyup(function (){
-            var password = $("[name=originalPassword]").val();
-            var passwordCheck = $(this).val();
+            let password = $("[name=originalPassword]").val();
+            let passwordCheck = $(this).val();
 
-            if(password != passwordCheck){
+            if(password !== passwordCheck){
                 $(".commentChk").addClass("field-error").text("비밀번호가 일치하지 않습니다.");
                 isPass = false;
             }

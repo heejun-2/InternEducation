@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>Title</title>
+    <style>
+        .container {
+            max-width: 900px;
+        }
+    </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -21,8 +26,9 @@
     </header>
 
     <div class="container">
-        <br>
-        <br>
+        <div class="py-5 text-center">
+            <h4>게시판</h4>
+        </div>
         <form class="container" action="" method="post">
             <div class="mb-4">
                 <label for="exampleFormControlInput2" class="form-label">작성자</label>
