@@ -1,19 +1,18 @@
 package com.example.upgrade.mapper;
 
-import com.example.upgrade.dto.BoardSch;
+import com.example.upgrade.dto.Pagination;
 import com.example.upgrade.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
 public interface BoardMapper {
-    List<Board> getBoardList(BoardSch sch);
+    List<Board> getBoardList(Pagination sch);
 
     int countBoard();
 
-    int titleCount(BoardSch sch);
+    int titleCount(Pagination sch);
 
     Board getBoard(int BoardId);
 
@@ -25,8 +24,9 @@ public interface BoardMapper {
 
     void delete(int boardId);
 
-
     void deleteAll();
 
     void fileDelete(int BoardId);
+
+
 }

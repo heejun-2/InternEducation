@@ -3,7 +3,7 @@
 
 <mapper namespace="com.example.upgrade.mapper.BoardMapper">
 
-    <select id="getBoardList" resultType="com.example.upgrade.entity.Board" parameterType="com.example.upgrade.dto.BoardSch">
+    <select id="getBoardList" resultType="com.example.upgrade.entity.Board" parameterType="com.example.upgrade.dto.Pagination">
         SELECT *
         FROM board
         WHERE title LIKE CONCAT('%',#{title},'%')
@@ -23,7 +23,7 @@
         FROM board;
     </select>
 
-    <select id="titleCount" resultType="int" parameterType="com.example.upgrade.dto.BoardSch">
+    <select id="titleCount" resultType="int" parameterType="com.example.upgrade.dto.Pagination">
         SELECT count(boardId) AS cnt
         FROM board
         WHERE title LIKE CONCAT('%',#{title},'%')
@@ -49,10 +49,9 @@
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE board
+        DELETE FROM board
         WHERE boardId = #{boardId};
     </delete>
-
 
 
     <delete id="deleteAll">

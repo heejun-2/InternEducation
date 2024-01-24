@@ -13,7 +13,11 @@ public class Encryption {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(password.getBytes());
-            sha = Base64.getEncoder().encodeToString(messageDigest.digest());
+            StringBuilder builder = new StringBuilder();
+            for (byte b : messageDigest.digest()) {
+                builder.append(String.format("%02x", b));
+            }
+            sha = builder.toString();
         } catch (NoSuchAlgorithmException e) {
             log.info("error", e);
             throw new RuntimeException(e);

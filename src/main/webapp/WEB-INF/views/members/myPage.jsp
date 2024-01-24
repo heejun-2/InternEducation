@@ -46,9 +46,11 @@
                 <div class="col">
                     <button class="w-100 btn btn-outline-warning" onclick="location.href='${path}/members/${member.memberId}/edit'" type="button">수정</button>
                 </div>
+                <c:if test="${member.role ne 'ADMIN'}">
                 <div class="col">
-                    <button class="w-100 btn btn-outline-danger" onclick="location.href='${path}/members/${member.memberId}/delete'" type="button">삭제</button>
+                    <button class="w-100 btn btn-outline-danger" onclick="location.href='${path}/members/${member.memberId}/delete'" type="button">탈퇴</button>
                 </div>
+                </c:if>
                 <div class="col">
                     <button class="w-100 btn btn-outline-dark" onclick="location.href='${path}/boards'" type="button">취소</button>
                 </div>

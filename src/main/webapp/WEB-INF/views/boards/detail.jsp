@@ -44,7 +44,7 @@
             </div>
         </form>
         <hr>
-        첨부파일 :
+        <h5><span class="badge text-bg-primary">첨부파일</span></h5>
         <c:if test="${not empty board.uploadFileName and board.uploadFileName ne ''}">
             <a>${board.uploadFileName}</a>&emsp;
             <span>

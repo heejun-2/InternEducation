@@ -2,8 +2,8 @@ package com.example.upgrade.controller;
 
 import com.example.upgrade.SessionConst;
 import com.example.upgrade.dto.BoardSaveForm;
-import com.example.upgrade.dto.BoardSch;
 import com.example.upgrade.dto.BoardUpdateForm;
+import com.example.upgrade.dto.Pagination;
 import com.example.upgrade.entity.Board;
 import com.example.upgrade.entity.Member;
 import com.example.upgrade.entity.UploadFile;
@@ -23,11 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
-import javax.naming.Binding;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -38,8 +36,7 @@ public class BoardController {
     private final FileStore fileStore;
 
     @RequestMapping("/boards")
-    public String index(@ModelAttribute("board") BoardSch sch,
-                        @RequestParam(name = "page", defaultValue = "1") int page,
+    public String index(@ModelAttribute("board") Pagination sch,
                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                         Model model){
         if(member == null){
@@ -48,7 +45,7 @@ public class BoardController {
 
         model.addAttribute("member", member);
 
-        sch.pageSetting(boardService.titleCount(sch), page);
+        sch.pageSetting(boardService.titleCount(sch), sch.getPage());
 
         model.addAttribute("boards", boardService.getBoardList(sch));
         model.addAttribute("pageVo", sch);
@@ -134,6 +131,15 @@ public class BoardController {
         }
 
         return "redirect:/boards";
+    }
+
+    @ResponseBody
+    @PostMapping("/board/delete")
+    public List<String> choiceDelete(@RequestBody List<String> boardIdArray) {
+        log.info("boardIdArray={}", boardIdArray);
+        boardService.choiceDelete(boardIdArray);
+
+        return boardIdArray;
     }
 
     @GetMapping("/boards/deleteAll")

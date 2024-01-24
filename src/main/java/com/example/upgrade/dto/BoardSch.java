@@ -10,9 +10,7 @@ public class BoardSch {
 
     private int rowCount = 5;   // 한 페이지 당 보여줄 게시글 개수
     private int pageCount = 3;  // 한 블럭에 해당하는 페이지 개수
-    private int totalCount;     // 총 게시물 개수
-    private int page;           // 현재 페이지
-    
+
     private int startPage = 1;  // 한 블럭의 시작 페이지
     private int endPage;        // 한 블럭의 끝 페이지
 

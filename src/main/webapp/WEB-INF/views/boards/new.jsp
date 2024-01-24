@@ -42,8 +42,9 @@
             <input type="hidden" name="memberId" value="${member.memberId}">
         <hr>
         <div class="mb-3">
-            <label for="exampleFile" class="form-label">첨부파일</label>
+            <h5><span class="badge text-bg-primary">첨부파일</span></h5>
             <input type="file" class="form-control" id="exampleFile" name="attachFile">
+            <input type="file" class="form-control" multiple>
         </div>
         <br>
         <div class="d-grid gap-1 d-md-flex justify-content-md-end">

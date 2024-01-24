@@ -1,8 +1,8 @@
 package com.example.upgrade.service;
 
 import com.example.upgrade.dto.BoardSaveForm;
-import com.example.upgrade.dto.BoardSch;
 import com.example.upgrade.dto.BoardUpdateForm;
+import com.example.upgrade.dto.Pagination;
 import com.example.upgrade.entity.Board;
 import com.example.upgrade.entity.UploadFile;
 import com.example.upgrade.mapper.BoardMapper;
@@ -18,7 +18,7 @@ public class BoardService {
         this.boardMapper = boardMapper;
     }
 
-    public List<Board> getBoardList(BoardSch sch){
+    public List<Board> getBoardList(Pagination sch){
         if(sch.getTitle() == null) sch.setTitle("");
 
         return boardMapper.getBoardList(sch);
@@ -27,7 +27,7 @@ public class BoardService {
     public int countBoard() {
         return boardMapper.countBoard();
     }
-    public int titleCount(BoardSch boardSch){
+    public int titleCount(Pagination boardSch){
         if(boardSch.getTitle() == null) boardSch.setTitle("");
 
         return boardMapper.titleCount(boardSch);
@@ -58,6 +58,7 @@ public class BoardService {
             board.setUploadFileName("");
             board.setStoreFileName("");
         }
+        // list 크기만큼 파일저장
 
         boardMapper.create(board);
     }
@@ -86,7 +87,12 @@ public class BoardService {
         boardMapper.delete(boardId);
     }
 
-
+    public void choiceDelete(List<String> boardIdArray) {
+        for (String s : boardIdArray) {
+            int boardId = Integer.parseInt(s);
+            boardMapper.delete(boardId);
+        }
+    }
 
     public void deleteAll(){
         boardMapper.deleteAll();
@@ -95,4 +101,6 @@ public class BoardService {
     public void fileDelete(int boardId){
         boardMapper.fileDelete(boardId);
     }
+
+
 }
