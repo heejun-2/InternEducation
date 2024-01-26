@@ -14,6 +14,9 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        textarea{
+            height: 150px;
+        }
     </style>
 </head>
 <body>
@@ -43,8 +46,7 @@
         <hr>
         <div class="mb-3">
             <h5><span class="badge text-bg-primary">첨부파일</span></h5>
-            <input type="file" class="form-control" id="exampleFile" name="attachFile">
-            <input type="file" class="form-control" multiple>
+            <input type="file" class="form-control" name="multipartFileList" multiple>
         </div>
         <br>
         <div class="d-grid gap-1 d-md-flex justify-content-md-end">
