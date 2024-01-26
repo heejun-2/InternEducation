@@ -10,6 +10,9 @@
         .container {
             max-width: 900px;
         }
+        textarea{
+            height: 150px;
+        }
     </style>
 </head>
 <body>
@@ -44,20 +47,28 @@
             </div>
         </form>
         <hr>
-        <h5><span class="badge text-bg-primary">첨부파일</span></h5>
-        <c:if test="${not empty board.uploadFileName and board.uploadFileName ne ''}">
-            <a>${board.uploadFileName}</a>&emsp;
-            <span>
-                <a href="${path}/download/${board.boardId}" class="btn btn-outline-primary">첨부파일 다운로드</a>
-            </span>
-            <c:if test="${member.memberId == board.memberId or member.role eq 'ADMIN'}">
-                <span>
-                    <a href="${path}/boards/${board.boardId}/fileDelete" class="btn btn-outline-danger">첨부파일 삭제</a>
-                </span>
-            </c:if>
-
+        <h5>
+            <span class="badge text-bg-primary">첨부파일</span>
+        </h5>
+        <div class="container">
+        <c:if test="${not empty fileList}">
+            <c:forEach var="file" items="${fileList}">
+                <c:if test="${file.uploadFileName ne ''}">
+                    <div class="mb-2">
+                        <a>${file.uploadFileName}</a>&emsp;
+                        <span>
+                            <a href="${path}/download/${file.fileId}" class="btn btn-outline-primary">첨부파일 다운로드</a>
+                        </span>
+                        <c:if test="${member.memberId == board.memberId or member.role eq 'ADMIN'}">
+                        <span>
+                            <a href="${path}/boards/${file.fileId}/fileDelete?boardId=${board.boardId}" class="btn btn-outline-danger">첨부파일 삭제</a>
+                        </span>
+                        </c:if>
+                    </div>
+                </c:if>
+            </c:forEach>
         </c:if>
-
+        </div>
 
         <br><br>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -73,7 +84,7 @@
                 <a href="${path}/boards" class="btn btn-outline-dark">목록으로</a>
             </div>
         </div>
-
+        <br><br>
     </div>
 </body>
 </html>

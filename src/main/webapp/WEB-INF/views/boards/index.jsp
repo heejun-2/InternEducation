@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <html>
 <head>
@@ -17,6 +18,10 @@
         }
         .blind{
             height: 22px;
+        }
+        a.active {
+            background-color: blue;
+            color:#fff;
         }
     </style>
 
@@ -67,7 +72,7 @@
                         <a href="${path}/boards/deleteAll" class="btn btn-outline-danger">게시글 전체삭제</a>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-outline-danger choiceBtn" disabled>게시글 선택삭제</button>
+                        <button class="btn btn-outline-danger choiceDeleteBtn" disabled>게시글 선택삭제</button>
                     </div>
                 </c:if>
 
@@ -84,20 +89,26 @@
         <table class="table table-hover table-bordered">
             <thead class="table-light">
             <tr class="text-center">
+                <c:if test="${member.role eq 'ADMIN'}">
                 <th><input type="checkbox" class="button_checkbox blind" id="checkAll"></th>
-                <th>글번호</th>
+                </c:if>
+                <th>No</th>
                 <th>작성자</th>
                 <th>제목</th>
+                <th>등록일</th>
                 <th>조회수</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="board" items="${boards}">
             <tr class="text-center">
+                <c:if test="${member.role eq 'ADMIN'}">
                 <td><input type="checkbox" class="button_checkbox blind" name="check" value="${board.boardId}"></td>
+                </c:if>
                 <td>${board.boardId}</td>
                 <td>${board.name}</td>
-                <td><a href="${path}/boards/${board.boardId}">${board.title}</a></td>
+                <td style="text-align: left"><a href="${path}/boards/${board.boardId}">${board.title}</a></td>
+                <td><fmt:formatDate value="${board.regdate}" pattern="yyyy-MM-dd" /></td>
                 <td>${board.visitCount}</td>
             </tr>
             </c:forEach>
@@ -105,13 +116,6 @@
         </table>
         <br>
         <div id="pagination" class="mb-4 d-flex justify-content-center">
-<%--            <!-- 맨 처음 페이지로 이동하는 버튼 -->--%>
-<%--            <c:if test="${pageVo.startPage > 1}">--%>
-<%--            <span>--%>
-<%--                <a href="${path}/boards?page=1">처음&emsp;</a>--%>
-<%--            </span>--%>
-<%--            </c:if>--%>
-
             <!-- 이전 블록으로 이동하는 버튼 -->
             <c:if test="${pageVo.isPrev == 1}">
                 <span>
@@ -122,7 +126,7 @@
             <!-- 시퀀스 보여주는 값을 변경. -->
             <c:forEach var="pageNum" begin="${pageVo.startPage}" end="${pageVo.endPage}">
                 <span>
-                    <a onclick="goPage(${pageNum})">&emsp;${pageNum}&emsp;</a>
+                    <a class="${pageVo.page == pageNum ? 'active' : ''} rounded-5" onclick="goPage(${pageNum})">&emsp;${pageNum}&emsp;</a>
                 </span>
             </c:forEach>
 
@@ -132,13 +136,6 @@
                     <a onclick="goPage(${pageVo.endPage + 1})"> > </a>
                 </span>
             </c:if>
-
-<%--            <!-- 맨 뒷 페이지로 이동하는 버튼 -->--%>
-<%--            <c:if test="${pageVo.endPage < pageVo.totalPageCount}">--%>
-<%--                <span>--%>
-<%--                    <a href="${path}/boards?page+${pageVo.totalPageCount}"> &emsp;끝 </a>--%>
-<%--                </span>--%>
-<%--            </c:if>--%>
         </div>
 
     </div>
@@ -166,39 +163,42 @@
                 }
 
                 if(checkedBoxCount > 0){
-                    $(".choiceBtn").attr("disabled", false);
+                    $(".choiceDeleteBtn").prop("disabled", false);
                 }
                 else{
-                    $(".choiceBtn").attr("disabled", true);
+                    $(".choiceDeleteBtn").prop("disabled", true);
                 }
             })
 
-            $(".choiceBtn").click(function(){
+            $(".choiceDeleteBtn").click(function(){
                 let boardIdArray = [];
 
                 $("input[name=check]:checked").each(function(){
                     boardIdArray.push($(this).val());
                 })
 
+                console.log(boardIdArray);
                 let isPass = confirm("정말로 삭제하시겠습니까?");
 
                 if(isPass){
                     $.ajax({
                         type : 'POST',
                         url : '/board/delete',
-                        dataType : 'json',
                         data : JSON.stringify(boardIdArray),
                         contentType : 'application/json',
+                        dataType : 'json',
                         success : function(result){
-                            alert("게시글이 삭제되었습니다.")
+                            alert("게시글이 삭제되었습니다.");
                             console.log(result);
                         },
                         error : function (request, status, error){
+                            console.log(error);
                         }
                     });
                 }
 
             })
+
         });
 
         function goPage(pageNum){

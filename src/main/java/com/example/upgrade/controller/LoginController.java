@@ -38,8 +38,7 @@ public class LoginController {
         Member loginMember = loginService.login(dto.getId(), dto.getPassword());
         
         if(loginMember == null){
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            model.addAttribute("msg", "아이디 또는 비밀번호가 맞지 않습니다.");
+            bindingResult.reject("msg", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "members/loginForm";
         }
 

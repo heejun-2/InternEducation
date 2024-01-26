@@ -11,7 +11,6 @@
         .container {
             max-width: 560px;
         }
-
     </style>
 </head>
 <body>
@@ -20,6 +19,7 @@
         <div class="py-5 text-center">
             <h2>마이페이지</h2>
         </div>
+
         <form action=""  method="post">
             <div class="mb-3">
                 <label for="userName">이름</label>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </form>
-    </div>
 
+    </div>
 </body>
 </html>

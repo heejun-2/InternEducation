@@ -2,6 +2,9 @@ package com.example.upgrade.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 public class Board {
     private int boardId;
@@ -11,11 +14,7 @@ public class Board {
     private String name;
     private int visitCount;
     private int memberId;
+    private Date regdate;
 
-    // 실제 업로드한 파일명
-    private String uploadFileName;
-    // 서버에서 관리하는 파일명
-    private String storeFileName;
-
-    private UploadFile attachFile;
+    private List<UploadFile> uploadFileList;
 }

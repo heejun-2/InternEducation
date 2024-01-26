@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class BoardUpdateForm {
@@ -20,11 +22,6 @@ public class BoardUpdateForm {
     private int visitCount;
     private int memberId;
 
-    // 실제 업로드한 파일명
-    private String uploadFileName;
-    // 서버에서 관리하는 파일명
-    private String storeFileName;
-
-    private MultipartFile attachFile;
+    private List<MultipartFile> multipartFileList;
 
 }

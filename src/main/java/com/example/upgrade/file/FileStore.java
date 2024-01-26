@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -16,6 +18,20 @@ public class FileStore {
 
     public String getFullPath(String filename){
         return fileDir + filename;
+    }
+
+    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+        if(multipartFiles.isEmpty()){
+            return null;
+        }
+        List<UploadFile> list = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            UploadFile uploadFile = storeFile(multipartFile);
+            list.add(uploadFile);
+        }
+
+        return list;
     }
 
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException {

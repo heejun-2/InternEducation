@@ -18,6 +18,18 @@
         WHERE boardId = #{boardId};
     </select>
 
+    <select id="getFileList" resultType="com.example.upgrade.entity.UploadFile" parameterType="int">
+        SELECT *
+        FROM file
+        WHERE boardId = #{boardId};
+    </select>
+
+    <select id="getFile" resultType="com.example.upgrade.entity.UploadFile" parameterType="int">
+        SELECT *
+        FROM file
+        WHERE fileId = #{fileId}
+    </select>
+
     <select id="countBoard" resultType="int">
         SELECT count(boardId) AS cnt
         FROM board;
@@ -35,33 +47,38 @@
         WHERE boardId = #{boardId};
     </update>
 
-    <insert id="create" parameterType="com.example.upgrade.entity.Board">
-        INSERT INTO board(title, content, name, visitCount, memberId, uploadFileName, storeFileName) VALUES (#{title}, #{content}, #{name}, #{visitCount}, #{memberId}, #{uploadFileName}, #{storeFileName});
+    <insert id="create" parameterType="com.example.upgrade.entity.Board" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO board(title, content, name, visitCount, memberId, regdate) VALUES (#{title}, #{content}, #{name}, #{visitCount}, #{memberId}, NOW());
+    </insert>
+
+    <insert id="fileUpload" parameterType="com.example.upgrade.entity.UploadFile">
+        INSERT INTO file(uploadFileName, storeFileName, boardId) VALUES (#{uploadFileName}, #{storeFileName}, #{boardId});
     </insert>
 
     <update id="update" parameterType="com.example.upgrade.entity.Board">
         UPDATE board
         SET title = #{title},
-            content = #{content},
-            uploadFileName = #{uploadFileName},
-            storeFileName = #{storeFileName}
+            content = #{content}
         WHERE boardId = #{boardId};
     </update>
+
 
     <delete id="delete" parameterType="int">
         DELETE FROM board
         WHERE boardId = #{boardId};
     </delete>
 
+    <delete id="deleteFileByBoardId" parameterType="int">
+        DELETE FROM file
+        WHERE boardId = #{boardId};
+    </delete>
 
     <delete id="deleteAll">
         DELETE FROM board;
     </delete>
 
     <update id="fileDelete" parameterType="int">
-        UPDATE board
-        SET uploadFileName = '',
-            storeFileName = ''
-        WHERE boardId = #{boardId};
+        DELETE FROM file
+        WHERE fileId = #{fileId};
     </update>
 </mapper>

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -65,8 +67,10 @@ public class BoardController {
 
         boardService.plusVisitCount(boardId);
         Board board = boardService.getBoard(boardId);
+        List<UploadFile> uploadFileList = boardService.getFileList(boardId);
 
         model.addAttribute("board", board);
+        model.addAttribute("fileList", uploadFileList);
 
         return "boards/detail";
     }
@@ -90,9 +94,9 @@ public class BoardController {
             return "boards/new";
         }
 
-        UploadFile uploadFile = fileStore.storeFile(dto.getAttachFile());
+        List<UploadFile> uploadFileList = fileStore.storeFiles(dto.getMultipartFileList());
 
-        boardService.create(dto, uploadFile);
+        boardService.create(dto, uploadFileList);
         redirect.addFlashAttribute("msg", "게시글이 생성되었습니다.");
 
         return "redirect:/boards";
@@ -101,8 +105,10 @@ public class BoardController {
     @GetMapping("/boards/{boardId}/edit")
     public String editPage(@PathVariable("boardId") int boardId, Model model){
         Board board = boardService.getBoard(boardId);
+        List<UploadFile> uploadFileList = boardService.getFileList(boardId);
 
         model.addAttribute("board", board);
+        model.addAttribute("fileList", uploadFileList);
 
         return "boards/edit";
     }
@@ -113,9 +119,10 @@ public class BoardController {
             return "boards/edit";
         }
 
-        UploadFile uploadFile = fileStore.storeFile(dto.getAttachFile());
+        List<UploadFile> uploadFileList = fileStore.storeFiles(dto.getMultipartFileList());
+        log.info("uploadFileList={}", uploadFileList);
+        boardService.update(dto, uploadFileList);
 
-        boardService.update(dto, uploadFile);
         redirect.addFlashAttribute("msg", "게시글이 수정되었습니다");
 
         return "redirect:/boards/" + dto.getBoardId();
@@ -126,6 +133,7 @@ public class BoardController {
         Board target = boardService.getBoard(boardId);
 
         if(target != null){
+            boardService.deleteFileByBoardId(boardId);
             boardService.delete(boardId);
             redirect.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
         }
@@ -157,11 +165,12 @@ public class BoardController {
         return "redirect:/boards";
     }
 
-    @GetMapping("/download/{boardId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("boardId") int boardId) throws MalformedURLException {
-        Board board = boardService.getBoard(boardId);
-        String uploadFileName = board.getUploadFileName();
-        String storeFileName = board.getStoreFileName();
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable("fileId") int fileId) throws MalformedURLException {
+        UploadFile file = boardService.getFile(fileId);
+        String uploadFileName = file.getUploadFileName();
+        String storeFileName = file.getStoreFileName();
+
         UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
 
         String encodeUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
@@ -172,13 +181,32 @@ public class BoardController {
                 .body(resource);
     }
 
-    @GetMapping("/boards/{boardId}/fileDelete")
-    public String fileDelete(@PathVariable("boardId") int boardId, RedirectAttributes redirect){
-        boardService.fileDelete(boardId);
+    @GetMapping("/boards/{fileId}/fileDelete")
+    public String fileDelete(@PathVariable("fileId") int fileId,
+                             @RequestParam(name = "boardId") int boardId, RedirectAttributes redirect){
+        boardService.fileDelete(fileId);
 
         redirect.addFlashAttribute("msg", "첨부파일이 삭제되었습니다.");
 
         return "redirect:/boards/" + boardId;
     }
 
+
+    @PostMapping("/index.do")
+    @ResponseBody
+    public Board ajax(@RequestBody Map<String, String> vo){
+        log.info("ket={}", vo.keySet());
+        log.info("values={}", vo.values());
+        Board board = new Board();
+        board.setName("heejun");
+        return board;
+    }
+
+    @PostMapping("/ajax1.do")
+    @ResponseBody
+    public String ajax2(@RequestParam(name = "name") String name){
+        log.info("name={}", name);
+
+        return name;
+    }
 }

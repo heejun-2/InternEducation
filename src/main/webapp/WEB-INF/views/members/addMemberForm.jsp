@@ -91,7 +91,7 @@
             }
         });
 
-        $(".addBtn").click(function (){
+        $(".addBtn").click(function(){
             if(!isPass){
                 alert("비밀번호를 다시 확인해주세요.");
             }

@@ -15,6 +15,9 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        textarea{
+            height: 150px;
+        }
     </style>
 </head>
 <body>
@@ -43,13 +46,23 @@
             </div>
             <hr>
             <div class="mb-3">
-                <label for="oldFileName" class="form-label">기존 첨부파일</label>
-                <input type="text" class="form-control bg-body-secondary" id="oldFileName" value="${board.uploadFileName}" readonly placeholder="기존 첨부파일이 없습니다.">
+                <label class="form-label">기존 첨부파일</label>
+                <div class="d-grid gap-2 d-md-block">
+                    <c:if test="${empty fileList}">
+                        <input type="text" class="form-control bg-body-secondary" placeholder="기존 첨부파일이 없습니다." readonly>
+                    </c:if>
+                    <c:if test="${not empty fileList}">
+                        <c:forEach var="file" items="${fileList}">
+                                <c:if test="${file.uploadFileName ne ''}">
+                                    <button class="btn btn-outline-info" type="button" disabled>${file.uploadFileName}</button>
+                                </c:if>
+                        </c:forEach>
+                    </c:if>
+                </div>
+
                 <br>
-                <label for="exampleFile" class="form-label">수정할 첨부파일</label>
-                <input type="file" class="form-control" id="exampleFile" name="attachFile">
-                <input type="hidden" name="uploadFileName" value="${board.uploadFileName}">
-                <input type="hidden" name="storeFileName" value="${board.storeFileName}">
+                <label for="exampleFile" class="form-label">추가할 첨부파일</label>
+                <input type="file" class="form-control" id="exampleFile" name="multipartFileList" multiple>
             </div>
             <br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">

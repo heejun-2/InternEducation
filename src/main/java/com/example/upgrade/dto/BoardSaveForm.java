@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class BoardSaveForm {
@@ -15,11 +18,7 @@ public class BoardSaveForm {
     private String content;
     private int visitCount;
     private int memberId;
+    private Date regdate;
 
-    // 실제 업로드한 파일명
-    private String uploadFileName;
-    // 서버에서 관리하는 파일명
-    private String storeFileName;
-
-    private MultipartFile attachFile;
+    private List<MultipartFile> multipartFileList;
 }

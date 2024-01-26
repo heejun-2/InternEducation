@@ -16,6 +16,10 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        .global-error{
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -26,9 +30,8 @@
             <h2>로그인</h2>
         </div>
         <form:form action="" modelAttribute="loginForm" method="post">
-            <c:if test="${not empty msg}">
-                <p class="field-error">${msg}</p>
-            </c:if>
+            <form:errors class="global-error" />
+            <br>
             <div class="mb-3">
                 <label for="loginId">로그인 ID</label>
                 <input type="text" id="loginId" name="id" value="${loginForm.id}" class="form-control">
