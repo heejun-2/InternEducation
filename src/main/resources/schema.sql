@@ -20,6 +20,14 @@ CREATE TABLE member(
                        primary key(memberId)
 );
 
+CREATE TABLE file(
+    fileId int auto_increment primary key,
+    uploadFileName varchar(100),
+    storeFileName varchar(100),
+    boardId int,
+    FOREIGN KEY(boardId) REFERENCES board(boardId)
+);
+
 INSERT INTO board(title, content, name, visitCount) VALUES ('title1', 'content1', 'name1', 0);
 INSERT INTO board(title, content, name, visitCount) VALUES ('title2', 'content2', 'name2', 0);
 INSERT INTO board(title, content, name, visitCount) VALUES ('title3', 'content3', 'name3', 0);
@@ -32,4 +40,7 @@ INSERT INTO board(title, content, name, visitCount) VALUES ('title9', 'content9'
 INSERT INTO board(title, content, name, visitCount) VALUES ('title10', 'content10', 'name10', 0);
 
 INSERT INTO member(id, originalPassword, name, email, phoneNumber, role) VALUES ('admin123', 'admin123@', '관리자', 'admin@naver.com', '010-1234-5678', 'ADMIN');
-ALTER TABLE board ADD COLUMN memberId int
+ALTER TABLE board ADD COLUMN memberId int;
+ALTER TABLE board ADD COLUMN regdate DATE;
+ALTER TABLE board DROP COLUMN uploadFileName;
+ALTER TABLE board DROP COLUMN storeFileName;
